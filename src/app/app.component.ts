@@ -7,33 +7,14 @@ import { ServerService } from "./server.service";
   styleUrls: ["./app.component.css"]
 })
 export class AppComponent {
-  servers = [
-    {
-      name: "Testserver",
-      capacity: 10,
-      id: this.generateId()
-    },
-    {
-      name: "Liveserver",
-      capacity: 100,
-      id: this.generateId()
-    }
-  ];
+  servers: any[];
   constructor(private serverService: ServerService) {}
 
   onGet() {
-    this.serverService.getServer()
+    this.serverService
+      .getServer()
       .subscribe(
-        response => {
-          const data = response.json();
-          console.log(data);
-          this.onAddServer(data);
-          // this.servers.push({
-          //   name: response.name,
-          //   capacity: response.capacity,
-          //   id: response.id
-          // });
-        },
+        (servers: any[]) => (this.servers = servers),
         error => console.log(error)
       );
   }
