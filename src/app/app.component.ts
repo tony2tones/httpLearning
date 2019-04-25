@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { ServerService } from "./server.service";
 
 @Component({
@@ -6,18 +6,27 @@ import { ServerService } from "./server.service";
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.css"]
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   servers: any[];
   constructor(private serverService: ServerService) {}
 
-  onGet() {
+  ngOnInit() {
     this.serverService
       .getServer()
       .subscribe(
-        (servers: any[]) => (this.servers = servers),
+        (servers: any[]) => this.servers = servers,
         error => console.log(error)
       );
   }
+
+  // onGet() {
+  //   this.serverService
+  //     .getServer()
+  //     .subscribe(
+  //       (servers: any[]) => this.servers = servers,
+  //       error => console.log(error)
+  //     );
+  // }
 
   onAddServer(name: string) {
     this.servers.push({
@@ -26,6 +35,7 @@ export class AppComponent {
       id: this.generateId()
     });
   }
+
   onSave() {
     this.serverService
       .storeServer(this.servers)
